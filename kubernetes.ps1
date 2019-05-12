@@ -94,8 +94,11 @@ kubectl get nodes --output=wide
 
 Write-Output "Container Register : $server"
 
+#Get dockerpassword from Vault
+$DockerPassword = Get-AzKeyVaultSecret -VaultName $KeyVaultName -Name $UserName
+
 Write-Output "Login to registry"
-$PassWord | docker login $server -u $UserName --password-stdin
+$DockerPassword.SecretValueText | docker login $server -u $UserName --password-stdin
 
 Write-Output "Download default Hello-World image"
 docker pull nginxdemos/hello

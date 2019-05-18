@@ -110,7 +110,7 @@ Write-Output "Push Image to CRS"
 docker image push $server/hello:1.0
 
 #Create secret to Link AKS to CRS
-kubectl create secret docker-registry $server --docker-server=$server --docker-username=$UserName --docker-password=$Password --docker-email=$DockerEmail
+kubectl create secret docker-registry $server --docker-server=$server --docker-username=$UserName --docker-password=$($DockerPassword.SecretValueText) --docker-email=$DockerEmail
 
 #Check the secret
 kubectl describe secret
@@ -158,3 +158,13 @@ kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-adm
 kubectl proxy
 
 http://localhost:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/#!/login
+
+### Clean up
+#delete deployment
+$yaml | kubectl delete -f -
+
+# Clean up Azure resources
+Remove-AzAks -ResourceGroupName $ResourceGroupName -Name $ClusterName -Force
+Remove-AzADServicePrincipal -DisplayName $ServicePrincipalName -Force
+Remove-AzADApplication -DisplayName $ServicePrincipalName -Force
+Remove-AzResourceGroup -Name $ResourceGroupName -Force

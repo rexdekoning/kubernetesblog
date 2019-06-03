@@ -11,7 +11,7 @@ $RegistrySKU              = 'Basic'
 $RegistryName             = 'methosregistry'
 $DockerEmail              = 'rex@methos.nl'
 $AgenVMSize               = 'Standard_DS2_v2'
-$KubernetesVersion        = '1.12.6'
+$KubernetesVersion        = '1.12.8'
 $NetworkPlugin            = 'kubenet'
 $AgentCount               = 1
 $Tags =  @{ Owner="$Owner" };
